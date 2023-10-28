@@ -19,5 +19,7 @@ namespace Moldovan_Raluca_laborator2.Data
         public DbSet<Moldovan_Raluca_laborator2.Models.Publisher>? Publisher { get; set; }
 
         public DbSet<Moldovan_Raluca_laborator2.Models.Author>? Author { get; set; }
+
+        public DbSet<Moldovan_Raluca_laborator2.Models.Category>? Category { get; set; }
     }
 }
