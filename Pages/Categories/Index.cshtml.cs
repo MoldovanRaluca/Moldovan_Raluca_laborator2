@@ -36,7 +36,7 @@ namespace Moldovan_Raluca_laborator2.Pages.Categories
             CategoryData = new CategoryIndexData();
             CategoryData.Categories = await _context.Category
             .Include(i => i.BookCategories)
-                //.ThenInclude(c => c.Author)
+                .ThenInclude(c => c.Book.Author)
             .OrderBy(i => i.CategoryName)
             .ToListAsync();
             if (id != null)

@@ -12,7 +12,7 @@ namespace Moldovan_Raluca_laborator2.Models
         {
             var allCategories = context.Category;
             var bookCategories = new HashSet<int>(
-            book.BookCategories.Select(c => c.CategoryID)); //
+            book.BookCategories.Select(c => c.CategoryID)); 
             AssignedCategoryDataList = new List<AssignedCategoryData>();
             foreach (var cat in allCategories)
             {

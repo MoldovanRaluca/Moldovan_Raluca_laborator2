@@ -60,7 +60,7 @@
                         foreach (var b in item.BookCategories)
                         {
 
-                             @b.Book.Title 
+                             @b.Book.Title @: @b.Book.Author.FullName
 
                             <br />
                         }
