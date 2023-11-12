@@ -31,11 +31,9 @@ namespace Moldovan_Raluca_laborator2.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -52,6 +50,9 @@ namespace Moldovan_Raluca_laborator2.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<int?>("AuthorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BorrowingID")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
@@ -99,6 +100,34 @@ namespace Moldovan_Raluca_laborator2.Migrations
                     b.ToTable("BookCategory");
                 });
 
+            modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Borrowing", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("BookID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MemberID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("BookID")
+                        .IsUnique()
+                        .HasFilter("[BookID] IS NOT NULL");
+
+                    b.HasIndex("MemberID");
+
+                    b.ToTable("Borrowing");
+                });
+
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Category", b =>
                 {
                     b.Property<int>("ID")
@@ -114,6 +143,35 @@ namespace Moldovan_Raluca_laborator2.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Member", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Member");
                 });
 
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Publisher", b =>
@@ -167,6 +225,21 @@ namespace Moldovan_Raluca_laborator2.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Borrowing", b =>
+                {
+                    b.HasOne("Moldovan_Raluca_laborator2.Models.Book", "Book")
+                        .WithOne("Borrowing")
+                        .HasForeignKey("Moldovan_Raluca_laborator2.Models.Borrowing", "BookID");
+
+                    b.HasOne("Moldovan_Raluca_laborator2.Models.Member", "Member")
+                        .WithMany("Borrowings")
+                        .HasForeignKey("MemberID");
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Member");
+                });
+
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Author", b =>
                 {
                     b.Navigation("Books");
@@ -175,11 +248,18 @@ namespace Moldovan_Raluca_laborator2.Migrations
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Book", b =>
                 {
                     b.Navigation("BookCategories");
+
+                    b.Navigation("Borrowing");
                 });
 
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Category", b =>
                 {
                     b.Navigation("BookCategories");
+                });
+
+            modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Member", b =>
+                {
+                    b.Navigation("Borrowings");
                 });
 
             modelBuilder.Entity("Moldovan_Raluca_laborator2.Models.Publisher", b =>
